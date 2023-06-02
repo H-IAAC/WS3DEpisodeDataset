@@ -44,26 +44,29 @@ public class WallDetector extends Codelet {
         List<Idea> known;
         synchronized (visionMO) {
             vision = new CopyOnWriteArrayList((List<Thing>) visionMO.getI());
-            Idea wallsIdea = ((Idea) currentWallsMO.getI());
-            if (debug) {
-                System.out.println(wallsIdea.toStringFull());
-            }
-            known = Collections.synchronizedList(wallsIdea.getL());
-            synchronized(vision) {
-                for (Thing t : vision) {
-                    boolean found = false;
-                    synchronized(known) {
-                        CopyOnWriteArrayList<Idea> myknown = new CopyOnWriteArrayList<>(known);
-                        for (Idea e : myknown)
-                            if (t.getId() == ((int) e.get("ID").getValue())) {
-                                found = true;
-                                break;
+            synchronized (currentWallsMO) {
+                Idea wallsIdea = ((Idea) currentWallsMO.getI());
+                if (debug) {
+                    System.out.println(wallsIdea.toStringFull());
+                }
+                known = Collections.synchronizedList(wallsIdea.getL());
+                synchronized (vision) {
+                    for (Thing t : vision) {
+                        boolean found = false;
+                        synchronized (known) {
+                            CopyOnWriteArrayList<Idea> myknown = new CopyOnWriteArrayList<>(known);
+                            for (Idea e : myknown)
+                                if (t.getId() == ((int) e.get("ID").getValue())) {
+                                    found = true;
+                                    break;
+                                }
+                            if (!found && t.isBrick()) {
+                                known.add(constructWallIdea(t));
                             }
-                        if (!found && t.isBrick()) {
-                            known.add(constructWallIdea(t));
                         }
                     }
                 }
+                currentWallsMO.setI(wallsIdea);
             }
         }
     }

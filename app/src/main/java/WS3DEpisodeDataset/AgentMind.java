@@ -66,7 +66,7 @@ public class AgentMind extends Mind {
         Memory knownJewelsMO;
         Memory jewelsCounterMO;
         Memory wallsMO;
-        Memory bufferMO;
+        //Memory bufferMO;
         Memory eventsMO;
         Memory leafletsMO;
         MemoryContainer impulsesMO;
@@ -96,12 +96,12 @@ public class AgentMind extends Mind {
         wallsMO = createMemoryObject("WALLS", wallsIdea);
 
         //Buffer
-        Idea bufferIdea = new Idea("Buffer", null, "Configuration", 1);
-        bufferMO = createMemoryObject("BUFFER", bufferIdea);
+        //Idea bufferIdea = new Idea("Buffer", null, "Configuration", 1);
+        //bufferMO = createMemoryObject("BUFFER", bufferIdea);
 
         //Events
-        Idea eventsIdea = new Idea("Events", null, 5);
-        eventsMO = createMemoryObject("EVENTS", eventsIdea);
+        //Idea eventsIdea = new Idea("Events", null, 5);
+        //eventsMO = createMemoryObject("EVENTS", eventsIdea);
 
         //----Categories----
         //Events
@@ -150,45 +150,45 @@ public class AgentMind extends Mind {
         insertCodelet(wallsDetectorCodelet, "Perception");
 
         //Move Event Codelet
-        Idea moveEventCategory = constructEventCategory("Move", Arrays.asList("Self.Position.X", "Self.Position.Y"), "Linear");
-        eventsCategoriesIdea.add(moveEventCategory);
-        EventTracker moveEventTracker = new EventTracker("INNER", "EVENTS", moveEventCategory, debug);
-        moveEventTracker.setBufferSize(2);
-        moveEventTracker.setBufferStepSize(2);
-        moveEventTracker.addInput(innerSenseMO);
-        moveEventTracker.addOutput(eventsMO);
-        insertCodelet(moveEventTracker, "Perception");
+        //Idea moveEventCategory = constructEventCategory("Move", Arrays.asList("Self.Position.X", "Self.Position.Y"), "Linear");
+        //eventsCategoriesIdea.add(moveEventCategory);
+        //EventTracker moveEventTracker = new EventTracker("INNER", "EVENTS", moveEventCategory, debug);
+        //moveEventTracker.setBufferSize(2);
+        //moveEventTracker.setBufferStepSize(2);
+        //moveEventTracker.addInput(innerSenseMO);
+        //moveEventTracker.addOutput(eventsMO);
+        //insertCodelet(moveEventTracker, "Perception");
 
         //Rotate Event Codelet
-        Idea rotateEventCategory = constructEventCategory("Rotate", Arrays.asList("Self.Pitch"), "Linear");
-        EventTracker rotateEventTracker = new EventTracker("INNER", "EVENTS", rotateEventCategory, debug);
-        rotateEventTracker.setBufferSize(2);
-        rotateEventTracker.setBufferStepSize(2);
-        rotateEventTracker.addInput(innerSenseMO);
-        rotateEventTracker.addOutput(eventsMO);
-        insertCodelet(rotateEventTracker, "Perception");
+        //Idea rotateEventCategory = constructEventCategory("Rotate", Arrays.asList("Self.Pitch"), "Linear");
+        //EventTracker rotateEventTracker = new EventTracker("INNER", "EVENTS", rotateEventCategory, debug);
+        //rotateEventTracker.setBufferSize(2);
+        //rotateEventTracker.setBufferStepSize(2);
+        //rotateEventTracker.addInput(innerSenseMO);
+        //rotateEventTracker.addOutput(eventsMO);
+        //insertCodelet(rotateEventTracker, "Perception");
 
         //Found Jewel Event
-        for (Constants.JewelTypes type : Constants.JewelTypes.values()){
-            Idea foundJewelEventCategory = constructEventCategory("Found_" + type.typeName(), Arrays.asList("JewelsCounters." + type.typeName()), "StepUp");
-            EventTracker jewelFoundEventTracker = new EventTracker("JEWELS_COUNTERS", "EVENTS", foundJewelEventCategory, debug);
-            jewelFoundEventTracker.setBufferSize(2);
-            jewelFoundEventTracker.setBufferStepSize(2);
-            jewelFoundEventTracker.addInput(jewelsCounterMO);
-            jewelFoundEventTracker.addOutput(eventsMO);
-            insertCodelet(jewelFoundEventTracker, "Perception");
-        }
+        //for (Constants.JewelTypes type : Constants.JewelTypes.values()){
+        //    Idea foundJewelEventCategory = constructEventCategory("Found_" + type.typeName(), Arrays.asList("JewelsCounters." + type.typeName()), "StepUp");
+        //    EventTracker jewelFoundEventTracker = new EventTracker("JEWELS_COUNTERS", "EVENTS", foundJewelEventCategory, debug);
+        //    jewelFoundEventTracker.setBufferSize(2);
+        //    jewelFoundEventTracker.setBufferStepSize(2);
+        //    jewelFoundEventTracker.addInput(jewelsCounterMO);
+        //    jewelFoundEventTracker.addOutput(eventsMO);
+        //    insertCodelet(jewelFoundEventTracker, "Perception");
+        //}
 
-        //Collect Jewel Event
-        for (Constants.JewelTypes type : Constants.JewelTypes.values()){
-            Idea collectJewelEventCategory = constructEventCategory("Collected_" + type.typeName(), Arrays.asList("JewelsCounters." + type.typeName()), "StepDown");
-            EventTracker jewelCollectedEventTracker = new EventTracker("JEWELS_COUNTERS", "EVENTS", collectJewelEventCategory, debug);
-            jewelCollectedEventTracker.setBufferSize(2);
-            jewelCollectedEventTracker.setBufferStepSize(2);
-            jewelCollectedEventTracker.addInput(jewelsCounterMO);
-            jewelCollectedEventTracker.addOutput(eventsMO);
-            insertCodelet(jewelCollectedEventTracker, "Perception");
-        }
+        ////Collect Jewel Event
+        //for (Constants.JewelTypes type : Constants.JewelTypes.values()){
+        //    Idea collectJewelEventCategory = constructEventCategory("Collected_" + type.typeName(), Arrays.asList("JewelsCounters." + type.typeName()), "StepDown");
+        //    EventTracker jewelCollectedEventTracker = new EventTracker("JEWELS_COUNTERS", "EVENTS", collectJewelEventCategory, debug);
+        //    jewelCollectedEventTracker.setBufferSize(2);
+        //    jewelCollectedEventTracker.setBufferStepSize(2);
+        //    jewelCollectedEventTracker.addInput(jewelsCounterMO);
+        //    jewelCollectedEventTracker.addOutput(eventsMO);
+        //    insertCodelet(jewelCollectedEventTracker, "Perception");
+        //}
 
         //Impulses
         //Go to jewel
@@ -231,19 +231,19 @@ public class AgentMind extends Mind {
         legsMotorCodelet.addInput(legsMO);
         insertCodelet(legsMotorCodelet, "Motor");
 
-        TimelineBufferCodelet bufferCodelet = new TimelineBufferCodelet(Arrays.asList("INNER", "KNOWN_JEWELS", "IMPULSES"));
-        bufferCodelet.maxSize = 1_000_000;
-        bufferCodelet.addInput(innerSenseMO);
-        bufferCodelet.addInput(knownJewelsMO);
-        bufferCodelet.addInput(impulsesMO);
-        bufferCodelet.addOutput(bufferMO);
-        insertCodelet(bufferCodelet);
+        //TimelineBufferCodelet bufferCodelet = new TimelineBufferCodelet(Arrays.asList("INNER", "KNOWN_JEWELS", "IMPULSES"));
+        //bufferCodelet.maxSize = 1_000_000;
+        //bufferCodelet.addInput(innerSenseMO);
+        //bufferCodelet.addInput(knownJewelsMO);
+        //bufferCodelet.addInput(impulsesMO);
+        //bufferCodelet.addOutput(bufferMO);
+        //insertCodelet(bufferCodelet);
 
         bList.add(wallsDetectorCodelet);
         for (Codelet c : this.getCodeRack().getAllCodelets())
             c.setTimeStep(100);
 
-        bufferCodelet.setTimeStep(200);
+        //bufferCodelet.setTimeStep(200);
 
         start();
     }

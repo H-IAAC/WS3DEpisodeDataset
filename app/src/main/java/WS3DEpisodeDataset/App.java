@@ -7,8 +7,11 @@ import WS3DCoppelia.util.Constants;
 import WS3DEpisodeDataset.util.visualization.IdeaVisualizer;
 import br.unicamp.cst.core.entities.Memory;
 import br.unicamp.cst.core.entities.MemoryContainer;
+import br.unicamp.cst.io.rest.RESTServer;
 import br.unicamp.cst.representation.idea.Idea;
+import br.unicamp.cst.util.viewer.MindViewer;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,6 +22,9 @@ public class App {
         // Create Environment
         Environment env=new Environment(); //Creates only a creature and some apples
         AgentMind a = new AgentMind(env);  // Creates the Agent Mind and start it
+        MindViewer view = new MindViewer(a, "MindView", new ArrayList<>());
+        view.setVisible(true);
+        RESTServer rs = new RESTServer(a,5000,true);
 
         IdeaVisualizer visu = new IdeaVisualizer(a);
         visu.addMemoryWatch("Impulses", 5);
@@ -43,7 +49,7 @@ public class App {
         env.world.createThing(Constants.JewelTypes.MAGENTA_JEWEL, 1.0f, 9.5f);
         env.world.createThing(Constants.JewelTypes.YELLOW_JEWEL, 1.2f, 9.5f);
         try {
-            Thread.sleep(3000);
+            Thread.sleep(15000);
         } catch (InterruptedException ex) {
             Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -107,18 +107,21 @@ public class EventTracker extends Codelet {
                             inputIdeaBuffer.add(currentInputIdea.clone());
                             //initialEventIdea = null;
                             trackedEventBuffer.clear();
-                            Idea eventsIdea = (Idea) eventsOutputMO.getI();
-                            eventsIdea.add(event);
-                            if (debug)
-                                System.out.println(csvPrint(eventsIdea));
+                            synchronized (eventsOutputMO) {
+                                Idea eventsIdea = (Idea) eventsOutputMO.getI();
+                                eventsIdea.add(event);
+                                if (debug)
+                                    System.out.println(csvPrint(eventsIdea));
 
-                            try {
-                                PrintWriter out = new PrintWriter("../dataset/events");
-                                String csv = IdeaHelper.csvPrint(eventsIdea, 6);
-                                out.println(csv);
-                                out.close();
-                            } catch (FileNotFoundException e) {
-                                throw new RuntimeException(e);
+                                try {
+                                    PrintWriter out = new PrintWriter("../dataset/events");
+                                    String csv = IdeaHelper.csvPrint(eventsIdea, 6);
+                                    out.println(csv);
+                                    out.close();
+                                } catch (FileNotFoundException e) {
+                                    throw new RuntimeException(e);
+                                }
+                                eventsOutputMO.setI(eventsIdea);
                             }
 
                         } else {

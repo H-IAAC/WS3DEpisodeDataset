@@ -74,6 +74,7 @@ public class Collect extends Codelet {
                     counter.setValue((int) counter.getValue() - 1);
                 }
             }
+            jewelsCountersMO.setI(jewelsCountersIdea);
         }
     }
 }
