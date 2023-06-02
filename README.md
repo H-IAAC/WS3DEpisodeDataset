@@ -8,7 +8,7 @@ The simulation runs on the CoppeliaSim robotics simulator.
 ## Running Demo
 
 1. The simulation depends on the library [WS3D-Coppelia](https://github.com/CST-Group/WS3D-Coppelia) to commuicate with CoppeliaSim.
-   Follow the [Dependencies](https://github.com/CST-Group/WS3D-Coppelia#dependencies) section of the library instructions to install the necessary
+   Follow the [Dependencies](https://github.com/CST-Group/WS3D-Coppelia#dependencies) (1. and 2.) section of the library instructions to install the necessary
    dependencies for execution.
 2. Open CoppeliaSim
 3. Go to the folder for this repository and execute the command
