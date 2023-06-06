@@ -57,9 +57,10 @@ public class AgentMind extends Mind {
         createCodeletGroup("Perception");
         createCodeletGroup("Context");
         createCodeletGroup("Behavioral");
-        //createMemoryGroup("Sensory");
-        //createMemoryGroup("Motor");
-        //createMemoryGroup("Working");
+        createMemoryGroup("Sensory");
+        createMemoryGroup("Perception");
+        createMemoryGroup("Motor");
+        createMemoryGroup("Working");
 
         Memory innerSenseMO;
         Memory visionMO;
@@ -76,11 +77,14 @@ public class AgentMind extends Mind {
         //Inner Sense
         Idea innerSenseIdea = initializeInnerSenseIdea();
         innerSenseMO = createMemoryObject("INNER", innerSenseIdea);
+        registerMemory(innerSenseMO, "Sensory");
         //Vision sensor
         visionMO = createMemoryObject("VISION");
+        registerMemory(visionMO, "Sensory");
         //Detected Jewels
         Idea jewelsIdea = new Idea("Jewels", null, 5);
         knownJewelsMO = createMemoryObject("KNOWN_JEWELS", jewelsIdea);
+        registerMemory(knownJewelsMO, "Perception");
         //Jewels Counter
         List<Idea> jewelsCounters = new ArrayList<>();
         for (Constants.JewelTypes type : Constants.JewelTypes.values()){
@@ -91,9 +95,11 @@ public class AgentMind extends Mind {
         jewelCountersIdea.add(new Idea("Step", 0, "TimeStep", 1));
         jewelCountersIdea.add(new Idea("TimeStamp", System.currentTimeMillis(), "Property", 1));
         jewelsCounterMO = createMemoryObject("JEWELS_COUNTERS", jewelCountersIdea);
+        registerMemory(jewelsCounterMO, "Perception");
         //Detected Walls
         Idea wallsIdea = new Idea("Walls", null, 5);
         wallsMO = createMemoryObject("WALLS", wallsIdea);
+        registerMemory(wallsMO, "Perception");
 
         //Buffer
         //Idea bufferIdea = new Idea("Buffer", null, "Configuration", 1);
@@ -115,11 +121,14 @@ public class AgentMind extends Mind {
         //Impulses
         //Idea impulsesIdea = new Idea("Impulses", null, 0);
         impulsesMO = createMemoryContainer("IMPULSES");
+        registerMemory(impulsesMO, "Working");
 
         //Hands
         handsMO = createMemoryContainer("HANDS");
+        registerMemory(handsMO, "Motor");
         //Leags
         legsMO = createMemoryContainer("LEGS");
+        registerMemory(legsMO, "Motor");
 
         //Inner Sense Codelet
         Codelet innerSenseCodelet = new InnerSense(env.creature);
